@@ -30,8 +30,15 @@ public class ScoreScreen extends Pane {
                 "P3......\n" +
                 "P4......\n" +
                 "P5.......");
+        Text info = new Text("press enter to restart\npress escape to back to main menu");
+        info.boundsInLocalProperty().addListener(observable ->
+        {
+            info.setTranslateX((WIDTH - info.getBoundsInLocal().getWidth()) / 2);
+            info.setTranslateY(HEIGHT - TEXT_MARGIN_TOP_BOTTOM - info.getBoundsInLocal().getHeight());
+        });
+        info.getStyleClass().add("info");
         setPrefSize(WIDTH, HEIGHT);
-        getChildren().add(message);
+        getChildren().addAll(message,info);
         getStyleClass().add("screen");
     }
 }
