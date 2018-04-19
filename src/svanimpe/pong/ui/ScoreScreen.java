@@ -25,11 +25,11 @@ public class ScoreScreen extends Pane {
         });
         message.getStyleClass().add("endText");
         message.setText("High Score\n\n" +
-                "P1......\n" +
-                "P2.......\n" +
+                "P1....10:6\n" +
+                "P2......\n" +
                 "P3......\n" +
                 "P4......\n" +
-                "P5.......");
+                "P5......");
         Text info = new Text("press spacebar to back to main menu");
         info.boundsInLocalProperty().addListener(observable ->
         {
