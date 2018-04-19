@@ -30,7 +30,7 @@ public class ScoreScreen extends Pane {
                 "P3......\n" +
                 "P4......\n" +
                 "P5.......");
-        Text info = new Text("press escape to back to main menu");
+        Text info = new Text("press spacebar to back to main menu");
         info.boundsInLocalProperty().addListener(observable ->
         {
             info.setTranslateX((WIDTH - info.getBoundsInLocal().getWidth()) / 2);
