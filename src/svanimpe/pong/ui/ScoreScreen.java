@@ -26,7 +26,7 @@ public class ScoreScreen extends Pane {
         message.getStyleClass().add("endText");
         message.setText("High Score\n\n" +
                 "P1....10:6\n" +
-                "P2......5\n" +
+                "P2......56\n" +
                 "P3......\n" +
                 "P4......\n" +
                 "P5......");
