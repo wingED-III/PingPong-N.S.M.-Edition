@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import svanimpe.pong.Game;
 
 import static svanimpe.pong.Constants.*;
 
@@ -21,6 +22,8 @@ public class EndScreen extends Pane {
         if (playerScore == WINNING_SCORE) {
             header.getStyleClass().remove("header2");
             header.setText("p1 win");
+            getScore();
+
         } else if (p2Score == WINNING_SCORE){
             header.setText("p2 win");
             header.getStyleClass().add("header2");
@@ -28,8 +31,10 @@ public class EndScreen extends Pane {
         else
             header.setText("leaving so soon?");
     }
+    Game game;
 
-    public EndScreen() {
+    public EndScreen(Game game) {
+        this.game = game;
         header.boundsInLocalProperty().addListener(observable ->
         {
             /*
@@ -74,5 +79,10 @@ public class EndScreen extends Pane {
 
     public void setOnBack(Runnable Back) {
         this.Back = Back;
+    }
+    private void getScore(){
+        if(game.getIs2p()){
+
+        }
     }
 }
