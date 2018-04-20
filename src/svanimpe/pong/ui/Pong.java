@@ -39,6 +39,7 @@ public class Pong extends Application {
         });
         welcomeScreen.setToScore(() -> {
             content.getChildren().clear();
+            scoreScreen.showHighscore();
             content.getChildren().add(scoreScreen);
             scoreScreen.requestFocus();
         });

@@ -70,7 +70,8 @@ public class EndScreen extends Pane {
             }
             if (soloWin()) {
                 if (event.getCode().isLetterKey()) {
-                    name.append(event.getText());
+                    if (name.length() < 6)
+                        name.append(event.getText());
                     nameText.setText("Enter name: " + name);
                 } else if (event.getCode() == KeyCode.BACK_SPACE) {
                     if (name.length() > 0) {
@@ -80,7 +81,7 @@ public class EndScreen extends Pane {
                 } else if (event.getCode() == KeyCode.ENTER) {
                     if (name.length() == 0)
                         name.append("Unknown");
-                    HighScore.addHighScore(new HighScore(game.getPlayer().getScore(), name.toString()));
+                    HighScore.addHighScore(new HighScore(WINNING_SCORE - game.getOpponent().getScore(), name.toString()));
                     Back.run();
                 }
             }

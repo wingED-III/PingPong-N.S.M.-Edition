@@ -5,9 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import svanimpe.pong.HighScore;
 
-import static svanimpe.pong.Constants.HEIGHT;
-import static svanimpe.pong.Constants.TEXT_MARGIN_TOP_BOTTOM;
-import static svanimpe.pong.Constants.WIDTH;
+import static svanimpe.pong.Constants.*;
 
 public class ScoreScreen extends Pane {
     private Runnable start = () -> {
@@ -18,6 +16,7 @@ public class ScoreScreen extends Pane {
     }
 
     private final Text message = new Text();
+    private final Text detailsText = new Text();
 
     public ScoreScreen() {
         message.boundsInLocalProperty().addListener(observable ->
@@ -34,6 +33,11 @@ public class ScoreScreen extends Pane {
             info.setTranslateX((WIDTH - info.getBoundsInLocal().getWidth()) / 2);
             info.setTranslateY(HEIGHT - TEXT_MARGIN_TOP_BOTTOM - info.getBoundsInLocal().getHeight());
         });
+        detailsText.boundsInLocalProperty().addListener(observable -> {
+            detailsText.setTranslateX((WIDTH - detailsText.getBoundsInLocal().getWidth()) / 2);
+            detailsText.setTranslateY(message.getY() + 100);
+        });
+
         info.getStyleClass().add("info");
         setPrefSize(WIDTH, HEIGHT);
         getChildren().addAll(message, info);
@@ -51,12 +55,12 @@ public class ScoreScreen extends Pane {
     public void setOnBack(Runnable Back) {
         this.Back = Back;
     }
-    public void showHighscore(){
+
+    public void showHighscore() {
         HighScore[] scores = HighScore.getHighScores();
-        Text detailsText = new Text();
         StringBuilder details = new StringBuilder();
         for (int i = 0; i < scores.length; i++) {
-            details.append(i + ". " + scores[i].getName() + "\t" + scores[i].getScore() + "\n");
+            details.append(i + 1 + ". " + scores[i].getName() + "   " + WINNING_SCORE + ":" + scores[i].getScore() + "\n");
         }
         detailsText.getStyleClass().add("endText");
         detailsText.setText(details.toString());
