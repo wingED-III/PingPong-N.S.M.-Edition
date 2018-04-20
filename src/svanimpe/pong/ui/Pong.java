@@ -23,7 +23,7 @@ public class Pong extends Application {
         Group content = new Group();
         GameScreen gameScreen = new GameScreen(game);
         WelcomeScreen welcomeScreen = new WelcomeScreen(game);
-        EndScreen endScreen = new EndScreen();
+        EndScreen endScreen = new EndScreen(game);
         ScoreScreen scoreScreen = new ScoreScreen();
         content.getChildren().add(welcomeScreen);
 
@@ -57,6 +57,11 @@ public class Pong extends Application {
             game.start();
         });
         endScreen.setOnBack(() -> {
+            content.getChildren().clear();
+            content.getChildren().add(welcomeScreen);
+            welcomeScreen.requestFocus();
+        });
+        scoreScreen.setOnBack(() -> {
             content.getChildren().clear();
             content.getChildren().add(welcomeScreen);
             welcomeScreen.requestFocus();

@@ -1,5 +1,6 @@
 package svanimpe.pong.ui;
 
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
@@ -38,7 +39,19 @@ public class ScoreScreen extends Pane {
         });
         info.getStyleClass().add("info");
         setPrefSize(WIDTH, HEIGHT);
-        getChildren().addAll(message,info);
+        getChildren().addAll(message, info);
         getStyleClass().add("screen");
+        setOnKeyPressed(event -> {
+            if(event.getCode()==KeyCode.SPACE){
+                Back.run();
+            }
+        });
+    }
+
+    private Runnable Back = () -> {
+    };
+
+    public void setOnBack(Runnable Back) {
+        this.Back = Back;
     }
 }

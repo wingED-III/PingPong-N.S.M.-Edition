@@ -1,6 +1,6 @@
 package svanimpe.pong.ui;
 
-import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -22,15 +22,13 @@ public class EndScreen extends Pane {
         if (playerScore == WINNING_SCORE) {
             header.getStyleClass().remove("header2");
             header.setText("p1 win");
-            getScore();
-
-        } else if (p2Score == WINNING_SCORE){
+        } else if (p2Score == WINNING_SCORE) {
             header.setText("p2 win");
             header.getStyleClass().add("header2");
-        }
-        else
+        } else
             header.setText("leaving so soon?");
     }
+
     Game game;
 
     public EndScreen(Game game) {
@@ -63,13 +61,26 @@ public class EndScreen extends Pane {
         setPrefSize(WIDTH, HEIGHT);
         getChildren().addAll(header, info);
         getStyleClass().add("screen");
-
+        final StringBuilder name = new StringBuilder("");
+        final Text nameText = new Text("Enter name: ");
+        nameText.getStyleClass().add("info");
+        if (!game.getIs2p()) {
+            getChildren().add(nameText);
+        }
         setOnKeyPressed(event ->
         {
-            if (event.getCode() == KeyCode.ENTER) {
+            if (event.getCode() == KeyCode.SPACE) {
                 onRestart.run();
             } else if (event.getCode() == KeyCode.ESCAPE) {
                 Back.run();
+            } else if (event.getCode().isLetterKey()) {
+                name.append(event.getText());
+                nameText.setText("Enter name: " + name);
+            } else if (event.getCode() == KeyCode.BACK_SPACE) {
+                if (name.length() > 0) {
+                    name.deleteCharAt(name.length() - 1);
+                    nameText.setText("Enter name: " + name);
+                }
             }
         });
     }
@@ -80,9 +91,11 @@ public class EndScreen extends Pane {
     public void setOnBack(Runnable Back) {
         this.Back = Back;
     }
-    private void getScore(){
-        if(game.getIs2p()){
 
-        }
+    private String getName(String name, String input, Text x) {
+        name += input;
+        x.setText(name);
+        return name;
     }
+
 }
