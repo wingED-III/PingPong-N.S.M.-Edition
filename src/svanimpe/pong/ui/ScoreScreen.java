@@ -3,6 +3,7 @@ package svanimpe.pong.ui;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import svanimpe.pong.HighScore;
 
 import static svanimpe.pong.Constants.HEIGHT;
 import static svanimpe.pong.Constants.TEXT_MARGIN_TOP_BOTTOM;
@@ -25,12 +26,8 @@ public class ScoreScreen extends Pane {
             message.setTranslateY(TEXT_MARGIN_TOP_BOTTOM);
         });
         message.getStyleClass().add("endText");
-        message.setText("High Score\n\n" +
-                "P1....10:6\n" +
-                "P2......56\n" +
-                "P3......\n" +
-                "P4......\n" +
-                "P5......");
+        message.setText("High Score\n\n");
+
         Text info = new Text("press spacebar to back to main menu");
         info.boundsInLocalProperty().addListener(observable ->
         {
@@ -42,7 +39,7 @@ public class ScoreScreen extends Pane {
         getChildren().addAll(message, info);
         getStyleClass().add("screen");
         setOnKeyPressed(event -> {
-            if(event.getCode()==KeyCode.SPACE){
+            if (event.getCode() == KeyCode.SPACE) {
                 Back.run();
             }
         });
@@ -53,5 +50,16 @@ public class ScoreScreen extends Pane {
 
     public void setOnBack(Runnable Back) {
         this.Back = Back;
+    }
+    public void showHighscore(){
+        HighScore[] scores = HighScore.getHighScores();
+        Text detailsText = new Text();
+        StringBuilder details = new StringBuilder();
+        for (int i = 0; i < scores.length; i++) {
+            details.append(i + ". " + scores[i].getName() + "\t" + scores[i].getScore() + "\n");
+        }
+        detailsText.getStyleClass().add("endText");
+        detailsText.setText(details.toString());
+        getChildren().addAll(detailsText);
     }
 }

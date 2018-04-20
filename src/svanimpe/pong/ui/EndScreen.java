@@ -77,10 +77,11 @@ public class EndScreen extends Pane {
                         name.deleteCharAt(name.length() - 1);
                         nameText.setText("Enter name: " + name);
                     }
-                }
-                else  if (event.getCode() ==KeyCode.ENTER){
-                   HighScore newScore = new HighScore(game.getPlayer().getScore(),name.toString());
-                   newScore.
+                } else if (event.getCode() == KeyCode.ENTER) {
+                    if (name.length() == 0)
+                        name.append("Unknown");
+                    HighScore.addHighScore(new HighScore(game.getPlayer().getScore(), name.toString()));
+                    Back.run();
                 }
             }
         });
