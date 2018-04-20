@@ -169,8 +169,8 @@ public class Game {
         checkWallCollision();
         checkPaddleOrEdgeCollision(player);
         checkPaddleOrEdgeCollision(opponent);
-        //if (!Is2p)
-            //ai.update(deltaTime);
+        if (!Is2p)
+            ai.update(deltaTime);
     }
 
     /* --- Collision detection --- */

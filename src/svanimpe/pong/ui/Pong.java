@@ -45,6 +45,7 @@ public class Pong extends Application {
         game.setOnGameEnd(() ->
         {
             content.getChildren().clear();
+            endScreen.setNameText();
             content.getChildren().add(endScreen);
             endScreen.requestFocus();
             endScreen.setScore(game.getPlayer().getScore(), game.getOpponent().getScore());

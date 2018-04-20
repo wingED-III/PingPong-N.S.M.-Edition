@@ -5,6 +5,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import svanimpe.pong.Game;
+import svanimpe.pong.HighScore;
 
 import static svanimpe.pong.Constants.*;
 
@@ -30,29 +31,27 @@ public class EndScreen extends Pane {
     }
 
     Game game;
+    final Text nameText = new Text("Enter name: ");
+    final StringBuilder name = new StringBuilder("");
 
     public EndScreen(Game game) {
         this.game = game;
         header.boundsInLocalProperty().addListener(observable ->
         {
-            /*
-             * When using CSS, the width and height (with CSS applied) aren't available right away.
-             * Therefore, we listen for changes and update the position once the width and height
-             * are available.
-             */
             header.setTranslateX((WIDTH - header.getBoundsInLocal().getWidth()) / 2); /* Centered. */
             header.setTranslateY(TEXT_MARGIN_TOP_BOTTOM);
         });
         header.getStyleClass().add("endText");
 
-        Text info = new Text("press enter to restart\npress escape to back to main menu");
+        nameText.boundsInLocalProperty().addListener(observable -> {
+            nameText.setTranslateX((WIDTH - 200 - nameText.getBoundsInLocal().getWidth()) / 2);
+            nameText.setTranslateY(header.getY() + 150);
+        });
+        nameText.getStyleClass().add("info");
+
+        Text info = new Text("press space to restart\npress escape to back to main menu");
         info.boundsInLocalProperty().addListener(observable ->
         {
-            /*
-             * When using CSS, the width and height (with CSS applied) aren't available right away.
-             * Therefore, we listen for changes and update the position once the width and height
-             * are available.
-             */
             info.setTranslateX((WIDTH - info.getBoundsInLocal().getWidth()) / 2); /* Centered. */
             info.setTranslateY(HEIGHT - TEXT_MARGIN_TOP_BOTTOM - info.getBoundsInLocal().getHeight());
         });
@@ -61,25 +60,27 @@ public class EndScreen extends Pane {
         setPrefSize(WIDTH, HEIGHT);
         getChildren().addAll(header, info);
         getStyleClass().add("screen");
-        final StringBuilder name = new StringBuilder("");
-        final Text nameText = new Text("Enter name: ");
-        nameText.getStyleClass().add("info");
-        if (!game.getIs2p()) {
-            getChildren().add(nameText);
-        }
+
         setOnKeyPressed(event ->
         {
             if (event.getCode() == KeyCode.SPACE) {
                 onRestart.run();
             } else if (event.getCode() == KeyCode.ESCAPE) {
                 Back.run();
-            } else if (event.getCode().isLetterKey()) {
-                name.append(event.getText());
-                nameText.setText("Enter name: " + name);
-            } else if (event.getCode() == KeyCode.BACK_SPACE) {
-                if (name.length() > 0) {
-                    name.deleteCharAt(name.length() - 1);
+            }
+            if (soloWin()) {
+                if (event.getCode().isLetterKey()) {
+                    name.append(event.getText());
                     nameText.setText("Enter name: " + name);
+                } else if (event.getCode() == KeyCode.BACK_SPACE) {
+                    if (name.length() > 0) {
+                        name.deleteCharAt(name.length() - 1);
+                        nameText.setText("Enter name: " + name);
+                    }
+                }
+                else  if (event.getCode() ==KeyCode.ENTER){
+                   HighScore newScore = new HighScore(game.getPlayer().getScore(),name.toString());
+                   newScore.
                 }
             }
         });
@@ -98,4 +99,18 @@ public class EndScreen extends Pane {
         return name;
     }
 
+    public void setNameText() {
+        nameText.setText("Enter name:");
+        if (name.length() > 0)
+            name.delete(0, name.length() - 1);
+        if (!soloWin()) {
+            getChildren().remove(nameText);
+        } else {
+            getChildren().add(nameText);
+        }
+    }
+
+    private boolean soloWin() {
+        return !game.getIs2p() && game.getPlayer().getScore() == WINNING_SCORE;
+    }
 }
