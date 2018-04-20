@@ -17,6 +17,7 @@ public class GameScreen extends Pane {
     private final Rectangle ball = new Rectangle(BALL_SIZE, BALL_SIZE);
     private final Rectangle player = new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT);
     private final Rectangle opponent = new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT);
+    private final Rectangle r1 = new Rectangle(PADDLE_WIDTH/1.5,PADDLE_HEIGHT/1.5);
 
     private final Text playerScore = new Text("0");
     private final Text opponentScore = new Text("0");
@@ -37,6 +38,10 @@ public class GameScreen extends Pane {
         opponent.translateYProperty().bind(game.getOpponent().yProperty());
         opponent.setFill(Color.CYAN);
 
+        r1.translateXProperty().bind(game.getR().xProperty());
+        r1.translateYProperty().bind(game.getR().yProperty());
+        r1.setFill(Color.AZURE);
+
         playerScore.textProperty().bind(game.getPlayer().scoreProperty().asString());
         playerScore.boundsInLocalProperty().addListener(observable ->
         {
@@ -56,7 +61,7 @@ public class GameScreen extends Pane {
         opponentScore.getStyleClass().add("p2Score");
 
         setPrefSize(WIDTH, HEIGHT);
-        getChildren().addAll(ball, player, opponent, playerScore, opponentScore);
+        getChildren().addAll(ball, player, opponent, playerScore, opponentScore,r1);
         getStyleClass().add("screen");
 
         setOnKeyPressed(this::keyPressed);

@@ -8,6 +8,7 @@ import svanimpe.pong.ai.DefaultAi;
 import svanimpe.pong.ai.PaddleAi;
 import svanimpe.pong.objects.Ball;
 import svanimpe.pong.objects.Paddle;
+import svanimpe.pong.objects.RandomObject;
 
 import static svanimpe.pong.Constants.*;
 
@@ -96,6 +97,7 @@ public class Game {
         opponent.setMovement(Paddle.Movement.NONE);
 
         launchBall();
+        setIntitialPosOfRanOb();
 
         state = State.PLAYING;
     }
@@ -133,6 +135,27 @@ public class Game {
         ball.setY(MARGIN_TOP_BOTTOM);
     }
 
+    /*randomObject*/
+    public RandomObject r = new RandomObject();
+    public RandomObject getR(){return r;}
+
+    /*random position of objects ,not draw */
+    public void launchRandomObject(){
+        /*set the left-up corner position of rectangle*/
+        r.setX(300);
+        r.setY(Math.random()*280+1);
+    }
+    public void dontLaunchRandomObject(){
+        /*set the left-up corner position of rectangle*/
+        r.setX(1000);
+        r.setY(1000);
+    }
+    public void setIntitialPosOfRanOb(){
+        r.setX(1000);
+        r.setY(1000);
+    }
+
+
     /* --- Player --- */
 
     private final Paddle player = new Paddle(PLAYER_PADDLE_SPEED);
@@ -165,6 +188,7 @@ public class Game {
         keepPaddleInBounds(opponent);
 
         ball.update(deltaTime);
+        r.update(deltaTime);
 
         checkWallCollision();
         checkPaddleOrEdgeCollision(player);
@@ -258,6 +282,12 @@ public class Game {
                 onGameEnd.run();
             } else {
                 launchBall();
+                if (Math.random()>=0.0&&Math.random()<=0.7)
+                    dontLaunchRandomObject();
+                else{
+                    launchRandomObject();
+                }
+
             }
         }
     }
