@@ -20,14 +20,11 @@ public class EndScreen extends Pane {
     private final Text header = new Text();
 
     public void setScore(int playerScore, int p2Score) {
+        header.getStyleClass().clear();
         if (playerScore == WINNING_SCORE) {
-            header.getStyleClass().remove("header2");
-            header.getStyleClass().remove("endText");
             header.getStyleClass().add("header");
             header.setText("p1 win");
         } else if (p2Score == WINNING_SCORE) {
-            header.getStyleClass().remove("header");
-            header.getStyleClass().remove("endText");
             header.getStyleClass().add("header2");
             header.setText("p2 win");
         } else
