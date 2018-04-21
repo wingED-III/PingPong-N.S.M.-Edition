@@ -23,13 +23,13 @@
 }
 
 
-.header, .info, .endText
+.header, .info, .endText, .header2
 {
     -fx-font-family: 'Arcade Normal';
     -fx-text-origin: top;
 }
 
-.header
+.header, .header2
 {
     -fx-font-size: 48px;
 }
@@ -53,12 +53,8 @@
 }
 
 .header2
-{
+ {
     -fx-fill: #00ffff;
-    -fx-font-size: 48px;
-    -fx-font-family: 'Arcade Normal';
-    -fx-text-origin: top;
-
 }
 
 .endText
