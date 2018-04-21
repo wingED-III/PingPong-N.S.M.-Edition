@@ -36,7 +36,8 @@ public class WelcomeScreen extends Pane {
         Text info = new Text("use the arrow keys to move" +
                 "\npress p to pause" +
                 "\npress enter to start" + "" +
-                "\npress spacebar for 2 players \n" +
+                "\npress spacebar for 2 players " +
+                "\npress E to view high scores\n" +
                 "\npress escape to quit");
         info.boundsInLocalProperty().addListener(observable ->
         {

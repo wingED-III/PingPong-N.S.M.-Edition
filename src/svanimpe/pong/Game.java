@@ -171,6 +171,7 @@ public class Game {
         checkPaddleOrEdgeCollision(opponent);
         if (!Is2p)
             ai.update(deltaTime);
+        setP2speed();
     }
 
     /* --- Collision detection --- */
