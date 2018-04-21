@@ -54,10 +54,11 @@
 
 .header2
 {
+    -fx-fill: #00ffff;
     -fx-font-size: 48px;
     -fx-font-family: 'Arcade Normal';
     -fx-text-origin: top;
-    -fx-fill: #00ffff;
+
 }
 
 .endText

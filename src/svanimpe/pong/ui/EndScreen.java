@@ -22,12 +22,16 @@ public class EndScreen extends Pane {
     public void setScore(int playerScore, int p2Score) {
         if (playerScore == WINNING_SCORE) {
             header.getStyleClass().remove("header2");
+            header.getStyleClass().remove("endText");
             header.setText("p1 win");
         } else if (p2Score == WINNING_SCORE) {
-            header.setText("p2 win");
             header.getStyleClass().add("header2");
+            header.setText("p2 win");
         } else
+        {
+            header.getStyleClass().add("endText");
             header.setText("leaving so soon?");
+        }
     }
 
     Game game;
@@ -41,7 +45,7 @@ public class EndScreen extends Pane {
             header.setTranslateX((WIDTH - header.getBoundsInLocal().getWidth()) / 2); /* Centered. */
             header.setTranslateY(TEXT_MARGIN_TOP_BOTTOM);
         });
-        header.getStyleClass().add("endText");
+
 
         nameText.boundsInLocalProperty().addListener(observable -> {
             nameText.setTranslateX((WIDTH - 200 - nameText.getBoundsInLocal().getWidth()) / 2);

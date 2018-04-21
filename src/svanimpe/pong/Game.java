@@ -89,8 +89,8 @@ public class Game {
         opponent.setX(WIDTH - MARGIN_LEFT_RIGHT - GOAL_WIDTH); /* Aligned with the goal area. */
         opponent.setY((HEIGHT - PADDLE_HEIGHT) / 2); /* Centered. */
 
-        player.setScore(7);
-        opponent.setScore(1);
+        player.setScore(0);
+        opponent.setScore(0);
 
         player.setMovement(Paddle.Movement.NONE);
         opponent.setMovement(Paddle.Movement.NONE);
