@@ -49,15 +49,16 @@ public class Ball extends GameObject
     }
     
     /* --- Update --- */
-    
     @Override
     public void update(double deltaTime)
     {
         double distanceTravelled = speed * deltaTime;
         double deltaX = distanceTravelled * Math.cos(angle);
         double deltaY = distanceTravelled * Math.sin(angle);
-        
+
         setX(getX() + deltaX);
         setY(getY() + deltaY);
-    }   
+
+
+    }
 }

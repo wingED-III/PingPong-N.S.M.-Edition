@@ -84,6 +84,12 @@ public class Constants
     public static final int PADDLE_SECTIONS = 6;
     public static final double PADDLE_SECTION_HEIGHT = BALL_SIZE; 
     public static final double PADDLE_HEIGHT = PADDLE_SECTIONS * PADDLE_SECTION_HEIGHT;
+
+
+    public static final double RANDOMOBJECT_WIDTH = 5;
+    public static final int RANDOMOBJECT_SECTIONS = 6;
+    public static final double RANDOMOBJECT_SECTION_HEIGHT = BALL_SIZE;
+    public static final double RANDOMOBJECT_HEIGHT = RANDOMOBJECT_SECTIONS * RANDOMOBJECT_SECTION_HEIGHT;
     
     /*
      * Every section of a paddle has an angle associated with it. This is the angle at which the
@@ -98,6 +104,14 @@ public class Constants
                                                                        degreesToRadians(20),
                                                                        degreesToRadians(40),
                                                                        degreesToRadians(60)};
+    public static final double[] RANDOMOBJECT_SECTION_ANGLES = new double[] {degreesToRadians(-60),
+                                                                        degreesToRadians(-40),
+                                                                        degreesToRadians(-20),
+                                                                        degreesToRadians(0),
+                                                                        degreesToRadians(0),
+                                                                        degreesToRadians(20),
+                                                                        degreesToRadians(40),
+                                                                        degreesToRadians(60)}; // 60 องศา
     
     /* --- Game --- */
     

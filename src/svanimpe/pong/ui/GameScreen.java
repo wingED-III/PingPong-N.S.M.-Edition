@@ -17,7 +17,7 @@ public class GameScreen extends Pane {
     private final Rectangle ball = new Rectangle(BALL_SIZE, BALL_SIZE);
     private final Rectangle player = new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT);
     private final Rectangle opponent = new Rectangle(PADDLE_WIDTH, PADDLE_HEIGHT);
-    private final Rectangle r1 = new Rectangle(PADDLE_WIDTH/1.5,PADDLE_HEIGHT/1.5);
+    private final Rectangle r1 = new Rectangle(RANDOMOBJECT_WIDTH,RANDOMOBJECT_HEIGHT);
 
     private final Text playerScore = new Text("0");
     private final Text opponentScore = new Text("0");
