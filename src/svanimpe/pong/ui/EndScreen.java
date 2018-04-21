@@ -86,7 +86,6 @@ public class EndScreen extends Pane {
                     if (name.length() == 0)
                         name.append("Unknown");
                     HighScore.addHighScore(new HighScore(WINNING_SCORE - game.getOpponent().getScore(), name.toString()));
-                    name.setLength(0);
                     Back.run();
                 }
             }
