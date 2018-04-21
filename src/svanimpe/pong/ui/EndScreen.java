@@ -26,6 +26,8 @@ public class EndScreen extends Pane {
             header.getStyleClass().add("header");
             header.setText("p1 win");
         } else if (p2Score == WINNING_SCORE) {
+            header.getStyleClass().remove("header");
+            header.getStyleClass().remove("endText");
             header.getStyleClass().add("header2");
             header.setText("p2 win");
         } else

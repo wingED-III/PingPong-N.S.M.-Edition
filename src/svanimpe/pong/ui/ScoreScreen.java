@@ -25,7 +25,7 @@ public class ScoreScreen extends Pane {
             message.setTranslateY(TEXT_MARGIN_TOP_BOTTOM);
         });
         message.getStyleClass().add("endText");
-        message.setText("High Score\n\n");
+        message.setText("High Scores\n\n");
 
         Text info = new Text("press spacebar to back to main menu");
         info.boundsInLocalProperty().addListener(observable ->
@@ -60,7 +60,8 @@ public class ScoreScreen extends Pane {
         HighScore[] scores = HighScore.getHighScores();
         StringBuilder details = new StringBuilder();
         for (int i = 0; i < scores.length; i++) {
-            details.append(i + 1 + ". " + scores[i].getName() + "   " + WINNING_SCORE + ":" + scores[i].getScore() + "\n");
+            if (scores[i].getScore() > 0)
+                details.append(i + 1 + ". " + scores[i].getName() + "   " + WINNING_SCORE + ":" + scores[i].getScore() + "\n");
         }
         detailsText.getStyleClass().add("endText");
         detailsText.setText(details.toString());
