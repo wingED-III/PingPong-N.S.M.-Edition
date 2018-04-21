@@ -27,8 +27,7 @@ public class EndScreen extends Pane {
         } else if (p2Score == WINNING_SCORE) {
             header.getStyleClass().add("header2");
             header.setText("p2 win");
-        } else
-        {
+        } else {
             header.getStyleClass().add("endText");
             header.setText("leaving so soon?");
         }
@@ -74,9 +73,10 @@ public class EndScreen extends Pane {
             }
             if (soloWin()) {
                 if (event.getCode().isLetterKey()) {
-                    if (name.length() < 6)
+                    if (name.length() < 6) {
                         name.append(event.getText());
-                    nameText.setText("Enter name: " + name);
+                        nameText.setText("Enter name: " + name);
+                    }
                 } else if (event.getCode() == KeyCode.BACK_SPACE) {
                     if (name.length() > 0) {
                         name.deleteCharAt(name.length() - 1);
@@ -86,6 +86,7 @@ public class EndScreen extends Pane {
                     if (name.length() == 0)
                         name.append("Unknown");
                     HighScore.addHighScore(new HighScore(WINNING_SCORE - game.getOpponent().getScore(), name.toString()));
+                    name.setLength(0);
                     Back.run();
                 }
             }
