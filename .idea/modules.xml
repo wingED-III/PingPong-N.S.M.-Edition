@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PingPong-N.S.M.-Edition.iml" filepath="$PROJECT_DIR$/PingPong-N.S.M.-Edition.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PingPong-N.S.M.-Edition.iml" filepath="$PROJECT_DIR$/.idea/PingPong-N.S.M.-Edition.iml" />
     </modules>
   </component>
 </project>
