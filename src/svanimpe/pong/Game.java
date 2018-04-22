@@ -244,7 +244,7 @@ public class Game {
 
                 }
             }
-            System.out.println("Hit randomObject"+ball.getAngle());
+            //System.out.println("Hit randomObject"+ball.getAngle());
 
 
         }
