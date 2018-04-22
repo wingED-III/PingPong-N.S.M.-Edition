@@ -8,6 +8,7 @@ import svanimpe.pong.ai.DefaultAi;
 import svanimpe.pong.ai.PaddleAi;
 import svanimpe.pong.objects.Ball;
 import svanimpe.pong.objects.Paddle;
+import svanimpe.pong.objects.RandomObject;
 
 import static svanimpe.pong.Constants.*;
 
@@ -26,6 +27,8 @@ public class Game {
     public int getWinningScore() {
         return winningScore;
     }
+
+    int checker = 0;
 
     /* --- Game loop --- */
 
@@ -96,6 +99,7 @@ public class Game {
         opponent.setMovement(Paddle.Movement.NONE);
 
         launchBall();
+        setIntitialPosOfRanOb();
 
         state = State.PLAYING;
     }
@@ -126,12 +130,32 @@ public class Game {
     public void launchBall() {
         boolean towardsOpponent = random.nextBoolean();
         double initialAngle = PADDLE_SECTION_ANGLES[random.nextInt(2) + 1]; /* We don't use the steepest angle. */
-
         ball.setSpeed(towardsOpponent ? -BALL_INITIAL_SPEED : BALL_INITIAL_SPEED);
         ball.setAngle(towardsOpponent ? -initialAngle : initialAngle);
         ball.setX((WIDTH - BALL_SIZE) / 2); /* Centered. */
         ball.setY(MARGIN_TOP_BOTTOM);
     }
+
+    /*randomObject*/
+    public RandomObject r = new RandomObject();
+    public RandomObject getR(){return r;}
+
+    /*random position of objects ,not draw */
+    public void launchRandomObject(){
+        /*set the left-up corner position of rectangle*/
+        r.setX(300);
+        r.setY(Math.random()*280+1);
+    }
+    public void dontLaunchRandomObject(){
+        /*set the left-up corner position of rectangle*/
+        r.setX(1000);
+        r.setY(1000);
+    }
+    public void setIntitialPosOfRanOb(){
+        r.setX(1000);
+        r.setY(1000);
+    }
+
 
     /* --- Player --- */
 
@@ -165,10 +189,13 @@ public class Game {
         keepPaddleInBounds(opponent);
 
         ball.update(deltaTime);
+        r.update(deltaTime);
 
         checkWallCollision();
         checkPaddleOrEdgeCollision(player);
         checkPaddleOrEdgeCollision(opponent);
+
+        checkRandomObjectCollision(r);
         if (!Is2p)
             ai.update(deltaTime);
         setP2speed();
@@ -200,6 +227,29 @@ public class Game {
         }
     }
 
+    private void checkRandomObjectCollision(RandomObject randomObject){
+        boolean ballHitRandomObject =ball.getX()+BALL_SIZE>randomObject.getX()&&ball.getX()<randomObject.getX()+RANDOMOBJECT_WIDTH
+                &&ball.getY()+BALL_SIZE>randomObject.getY()&&ball.getY()<randomObject.getY()+RANDOMOBJECT_HEIGHT;
+        if (ballHitRandomObject){
+            dontLaunchRandomObject();
+            for (int i = 0; i < RANDOMOBJECT_SECTIONS; i++) {
+                boolean ballHitTCurrentSection = ball.getY() < randomObject.getY() + (i + 0.5) * RANDOMOBJECT_SECTION_HEIGHT;
+                if (ballHitTCurrentSection) {
+                    ball.setAngle(RANDOMOBJECT_SECTION_ANGLES[i] *(ball.getAngle()*-1)*-1);
+                    ball.setSpeed(ball.getSpeed()*-1);
+                    break; /* Found our match. */
+                } else if (i == RANDOMOBJECT_SECTIONS - 1) { /* If we haven't found our match by now, it must be the last section. */
+                    ball.setAngle(RANDOMOBJECT_SECTION_ANGLES[i]*(ball.getAngle()*-1)*-1 );
+                    ball.setSpeed(ball.getSpeed()*-1);
+
+                }
+            }
+            System.out.println("Hit randomObject"+ball.getAngle());
+
+
+        }
+    }
+
     private void checkPaddleOrEdgeCollision(Paddle paddle) {
         boolean ballHitEdge;
         if (paddle == player) {
@@ -210,36 +260,48 @@ public class Game {
         if (!ballHitEdge) {
             return;
         }
-
         boolean ballHitPaddle = ball.getY() + BALL_SIZE > paddle.getY() && ball.getY() < paddle.getY() + PADDLE_HEIGHT;
-        if (ballHitPaddle) {
 
+        if (ballHitPaddle) {
             /*
              * Find out what section of the paddle was hit.
              */
+            //System.out.println(paddle == opponent ? -1 : 1);
+            System.out.println("Hit Paddle"+ball.getAngle());
             for (int i = 0; i < PADDLE_SECTIONS; i++) {
                 boolean ballHitCurrentSection = ball.getY() < paddle.getY() + (i + 0.5) * PADDLE_SECTION_HEIGHT;
                 if (ballHitCurrentSection) {
                     ball.setAngle(PADDLE_SECTION_ANGLES[i] * (paddle == opponent ? -1 : 1));
                     break; /* Found our match. */
                 } else if (i == PADDLE_SECTIONS - 1) { /* If we haven't found our match by now, it must be the last section. */
-                    ball.setAngle(PADDLE_SECTION_ANGLES[i] * (paddle == opponent ? -1 : 1));
+                    ball.setAngle(PADDLE_SECTION_ANGLES[i]*(paddle == opponent ? -1 : 1));
                 }
             }
-
             /*
              * Update and reposition the ball.
              */
             ball.setSpeed(ball.getSpeed() * BALL_SPEED_INCREASE);
             if (paddle == player) {
+                checker++;
                 ball.setX(MARGIN_LEFT_RIGHT + GOAL_WIDTH);
             } else {
                 ball.setX(WIDTH - MARGIN_LEFT_RIGHT - GOAL_WIDTH - BALL_SIZE);
             }
             new AudioClip(Sounds.HIT_PADDLE).play();
 
-        } else {
+            if (checker>=2){
+                if (Math.random()>=0.0&&Math.random()<=0.5){
+                    dontLaunchRandomObject();
+                    checker=1;
+                }
+                else{
+                    launchRandomObject();
+                    checker=-5;
+                }
 
+            }
+
+        } else {
             /*
              * Update the score.
              */
@@ -259,6 +321,8 @@ public class Game {
                 onGameEnd.run();
             } else {
                 launchBall();
+                dontLaunchRandomObject();
+                checker=0;
             }
         }
     }
