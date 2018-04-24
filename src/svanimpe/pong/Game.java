@@ -99,7 +99,7 @@ public class Game {
         opponent.setMovement(Paddle.Movement.NONE);
 
         launchBall();
-        setIntitialPosOfRanOb();
+        setInitialPosOfRanOb();
 
         state = State.PLAYING;
     }
@@ -144,17 +144,21 @@ public class Game {
     public void launchRandomObject(){
         /*set the left-up corner position of rectangle*/
         r.setX(300);
-        r.setY(Math.random()*280+1);
+        r.setY(Math.random()*265+1);
+
     }
     public void dontLaunchRandomObject(){
         /*set the left-up corner position of rectangle*/
         r.setX(1000);
         r.setY(1000);
     }
-    public void setIntitialPosOfRanOb(){
+    public void setInitialPosOfRanOb(){
         r.setX(1000);
         r.setY(1000);
     }
+//    public void moveRandomObject(){
+//
+//    }
 
 
     /* --- Player --- */
@@ -232,19 +236,21 @@ public class Game {
                 &&ball.getY()+BALL_SIZE>randomObject.getY()&&ball.getY()<randomObject.getY()+RANDOMOBJECT_HEIGHT;
         if (ballHitRandomObject){
             dontLaunchRandomObject();
-            for (int i = 0; i < RANDOMOBJECT_SECTIONS; i++) {
-                boolean ballHitTCurrentSection = ball.getY() < randomObject.getY() + (i + 0.5) * RANDOMOBJECT_SECTION_HEIGHT;
-                if (ballHitTCurrentSection) {
-                    ball.setAngle(RANDOMOBJECT_SECTION_ANGLES[i] *(ball.getAngle()*-1)*-1);
-                    ball.setSpeed(ball.getSpeed()*-1);
-                    break; /* Found our match. */
-                } else if (i == RANDOMOBJECT_SECTIONS - 1) { /* If we haven't found our match by now, it must be the last section. */
-                    ball.setAngle(RANDOMOBJECT_SECTION_ANGLES[i]*(ball.getAngle()*-1)*-1 );
-                    ball.setSpeed(ball.getSpeed()*-1);
-
+            //if (Math.random()>=0.0&&Math.random()<0.5) {
+                for (int i = 0; i < RANDOMOBJECT_SECTIONS; i++) {
+                    boolean ballHitTCurrentSection = ball.getY() < randomObject.getY() + (i + 0.5) * RANDOMOBJECT_SECTION_HEIGHT;
+                    if (ballHitTCurrentSection) {
+                        ball.setAngle(RANDOMOBJECT_SECTION_ANGLES[i] * ball.getAngle());
+                        ball.setSpeed(ball.getSpeed() * -1);
+                        break; /* Found our match. */
+                    } else if (i == RANDOMOBJECT_SECTIONS - 1) { /* If we haven't found our match by now, it must be the last section. */
+                        ball.setAngle(RANDOMOBJECT_SECTION_ANGLES[i] * ball.getAngle());
+                        ball.setSpeed(ball.getSpeed() * -1);
+                    }
                 }
-            }
-            System.out.println("Hit randomObject"+ball.getAngle());
+            //}
+            new AudioClip(Sounds.HIT_PADDLE).play();
+
 
 
         }
@@ -267,7 +273,7 @@ public class Game {
              * Find out what section of the paddle was hit.
              */
             //System.out.println(paddle == opponent ? -1 : 1);
-            System.out.println("Hit Paddle"+ball.getAngle());
+            //System.out.println("Hit Paddle"+ball.getAngle());
             for (int i = 0; i < PADDLE_SECTIONS; i++) {
                 boolean ballHitCurrentSection = ball.getY() < paddle.getY() + (i + 0.5) * PADDLE_SECTION_HEIGHT;
                 if (ballHitCurrentSection) {
@@ -280,19 +286,20 @@ public class Game {
             /*
              * Update and reposition the ball.
              */
+            checker++;
             ball.setSpeed(ball.getSpeed() * BALL_SPEED_INCREASE);
             if (paddle == player) {
-                checker++;
+
                 ball.setX(MARGIN_LEFT_RIGHT + GOAL_WIDTH);
             } else {
                 ball.setX(WIDTH - MARGIN_LEFT_RIGHT - GOAL_WIDTH - BALL_SIZE);
             }
             new AudioClip(Sounds.HIT_PADDLE).play();
 
-            if (checker>=2){
-                if (Math.random()>=0.0&&Math.random()<=0.5){
+            if (checker>=4){
+                if (Math.random()>=0.0&&Math.random()<=0.4){
                     dontLaunchRandomObject();
-                    checker=1;
+                    checker=2;
                 }
                 else{
                     launchRandomObject();
