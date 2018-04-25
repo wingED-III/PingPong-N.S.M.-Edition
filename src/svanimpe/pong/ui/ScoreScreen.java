@@ -41,6 +41,8 @@ public class ScoreScreen extends Pane {
         info.getStyleClass().add("info");
         setPrefSize(WIDTH, HEIGHT);
         getChildren().addAll(message, info);
+        getChildren().add(detailsText);
+        detailsText.getStyleClass().add("endText");
         getStyleClass().add("screen");
         setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.SPACE) {
@@ -63,8 +65,6 @@ public class ScoreScreen extends Pane {
             if (scores[i].getScore() > 0)
                 details.append(i + 1 + ". " + scores[i].getName() + "   " + WINNING_SCORE + ":" + scores[i].getScore() + "\n");
         }
-        detailsText.getStyleClass().add("endText");
         detailsText.setText(details.toString());
-        getChildren().addAll(detailsText);
     }
 }
