@@ -29,6 +29,7 @@ public class Game {
     }
 
     int checker = 0;
+    int checker2 = 0;
 
     /* --- Game loop --- */
 
@@ -97,9 +98,11 @@ public class Game {
 
         player.setMovement(Paddle.Movement.NONE);
         opponent.setMovement(Paddle.Movement.NONE);
+        r.setMovement(RandomObject.Movement.NONE);
 
+        dontLaunchRandomObject();
         launchBall();
-        setIntitialPosOfRanOb();
+
 
         state = State.PLAYING;
     }
@@ -137,25 +140,33 @@ public class Game {
     }
 
     /*randomObject*/
-    public RandomObject r = new RandomObject();
+    public RandomObject r = new RandomObject(OPPONENT_PADDLE_SPEED);
     public RandomObject getR(){return r;}
 
     /*random position of objects ,not draw */
-    public void launchRandomObject(){
+    public void launchRandomObject(RandomObject randomObject){
+        checker2=2;
         /*set the left-up corner position of rectangle*/
         r.setX(300);
-        r.setY(Math.random()*280+1);
+        r.setY(Math.random()*265+1);
+        r.setMovement(RandomObject.Movement.UP);
+        if (randomObject.getY() < MARGIN_TOP_BOTTOM) {
+            randomObject.setY(MARGIN_TOP_BOTTOM);
+            r.setMovement(RandomObject.Movement.DOWN);
+        } else if (randomObject.getY() + PADDLE_HEIGHT > HEIGHT - MARGIN_TOP_BOTTOM) { //bottom
+            randomObject.setY(HEIGHT - MARGIN_TOP_BOTTOM - PADDLE_HEIGHT);
+            r.setMovement(RandomObject.Movement.UP);
+        }
+
     }
     public void dontLaunchRandomObject(){
+        checker2-=2;
+        checker=0;
         /*set the left-up corner position of rectangle*/
         r.setX(1000);
         r.setY(1000);
+        r.setMovement(RandomObject.Movement.NONE);
     }
-    public void setIntitialPosOfRanOb(){
-        r.setX(1000);
-        r.setY(1000);
-    }
-
 
     /* --- Player --- */
 
@@ -194,8 +205,21 @@ public class Game {
         checkWallCollision();
         checkPaddleOrEdgeCollision(player);
         checkPaddleOrEdgeCollision(opponent);
-
         checkRandomObjectCollision(r);
+
+            if (r.getY() < MARGIN_TOP_BOTTOM) {
+                if (checker2 == 2){
+                    r.setY(MARGIN_TOP_BOTTOM);
+                    r.setMovement(RandomObject.Movement.DOWN);
+                }
+
+            } else if (r.getY() + PADDLE_HEIGHT > HEIGHT - MARGIN_TOP_BOTTOM) { //bottom
+                if (checker2 == 2){
+                    r.setY(HEIGHT - MARGIN_TOP_BOTTOM - PADDLE_HEIGHT);
+                    r.setMovement(RandomObject.Movement.UP);
+                }
+
+            }
         if (!Is2p)
             ai.update(deltaTime);
         setP2speed();
@@ -219,7 +243,6 @@ public class Game {
             ball.setAngle(ball.getAngle() * -1);
             new AudioClip(Sounds.HIT_WALL).play();
         }
-
         if (ballHitTopWall) {
             ball.setY(MARGIN_TOP_BOTTOM);
         } else if (ballHitBottomWall) {
@@ -232,21 +255,20 @@ public class Game {
                 &&ball.getY()+BALL_SIZE>randomObject.getY()&&ball.getY()<randomObject.getY()+RANDOMOBJECT_HEIGHT;
         if (ballHitRandomObject){
             dontLaunchRandomObject();
-            for (int i = 0; i < RANDOMOBJECT_SECTIONS; i++) {
-                boolean ballHitTCurrentSection = ball.getY() < randomObject.getY() + (i + 0.5) * RANDOMOBJECT_SECTION_HEIGHT;
-                if (ballHitTCurrentSection) {
-                    ball.setAngle(RANDOMOBJECT_SECTION_ANGLES[i] *(ball.getAngle()*-1)*-1);
-                    ball.setSpeed(ball.getSpeed()*-1);
-                    break; /* Found our match. */
-                } else if (i == RANDOMOBJECT_SECTIONS - 1) { /* If we haven't found our match by now, it must be the last section. */
-                    ball.setAngle(RANDOMOBJECT_SECTION_ANGLES[i]*(ball.getAngle()*-1)*-1 );
-                    ball.setSpeed(ball.getSpeed()*-1);
 
+                for (int i = 0; i < RANDOMOBJECT_SECTIONS; i++) {
+                    boolean ballHitTCurrentSection = ball.getY() < randomObject.getY() + (i + 0.5) * RANDOMOBJECT_SECTION_HEIGHT;
+                    if (ballHitTCurrentSection) {
+                        ball.setAngle(RANDOMOBJECT_SECTION_ANGLES[i] * ball.getAngle());
+                        ball.setSpeed(ball.getSpeed() * -1);
+                        break; /* Found our match. */
+                    } else if (i == RANDOMOBJECT_SECTIONS - 1) { /* If we haven't found our match by now, it must be the last section. */
+                        ball.setAngle(RANDOMOBJECT_SECTION_ANGLES[i] * ball.getAngle());
+                        ball.setSpeed(ball.getSpeed() * -1);
+                    }
                 }
-            }
-            //System.out.println("Hit randomObject"+ball.getAngle());
 
-
+            new AudioClip(Sounds.HIT_PADDLE).play();
         }
     }
 
@@ -266,8 +288,6 @@ public class Game {
             /*
              * Find out what section of the paddle was hit.
              */
-            //System.out.println(paddle == opponent ? -1 : 1);
-            System.out.println("Hit Paddle"+ball.getAngle());
             for (int i = 0; i < PADDLE_SECTIONS; i++) {
                 boolean ballHitCurrentSection = ball.getY() < paddle.getY() + (i + 0.5) * PADDLE_SECTION_HEIGHT;
                 if (ballHitCurrentSection) {
@@ -280,27 +300,26 @@ public class Game {
             /*
              * Update and reposition the ball.
              */
+            checker++;
             ball.setSpeed(ball.getSpeed() * BALL_SPEED_INCREASE);
             if (paddle == player) {
-                checker++;
+
                 ball.setX(MARGIN_LEFT_RIGHT + GOAL_WIDTH);
             } else {
                 ball.setX(WIDTH - MARGIN_LEFT_RIGHT - GOAL_WIDTH - BALL_SIZE);
             }
             new AudioClip(Sounds.HIT_PADDLE).play();
 
-            if (checker>=2){
+            if (checker>=4){
                 if (Math.random()>=0.0&&Math.random()<=0.5){
                     dontLaunchRandomObject();
-                    checker=1;
+                    checker=0;
                 }
                 else{
-                    launchRandomObject();
-                    checker=-5;
+                    launchRandomObject(r);
+                    checker=-6;
                 }
-
             }
-
         } else {
             /*
              * Update the score.
@@ -312,7 +331,6 @@ public class Game {
                 opponent.setScore(opponent.getScore() + 1);
                 new AudioClip(Sounds.SCORE_OPPONENT).play();
             }
-
             /*
              * Check if the game has ended. If not, play another round.
              */
@@ -323,6 +341,7 @@ public class Game {
                 launchBall();
                 dontLaunchRandomObject();
                 checker=0;
+
             }
         }
     }
