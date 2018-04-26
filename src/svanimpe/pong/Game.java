@@ -311,6 +311,7 @@ public class Game {
             new AudioClip(Sounds.HIT_PADDLE).play();
 
             if (checker>=4){
+                checker=0;
                 if (Math.random()>=0.0&&Math.random()<=0.5){
                     dontLaunchRandomObject();
                     checker=0;

@@ -63,7 +63,7 @@ public class ScoreScreen extends Pane {
         StringBuilder details = new StringBuilder();
         for (int i = 0; i < scores.length; i++) {
             if (scores[i].getScore() > 0)
-                details.append(i + 1 + ". " + scores[i].getName() + "   " + WINNING_SCORE + ":" + scores[i].getScore() + "\n");
+                details.append(i + 1 + ". " + scores[i].getName() + "   " + WINNING_SCORE + ":" + (WINNING_SCORE-scores[i].getScore()) + "\n");
         }
         detailsText.setText(details.toString());
     }
