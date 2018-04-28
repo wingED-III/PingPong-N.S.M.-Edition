@@ -44,8 +44,6 @@ public class EndScreen extends Pane {
             header.setTranslateX((WIDTH - header.getBoundsInLocal().getWidth()) / 2); /* Centered. */
             header.setTranslateY(TEXT_MARGIN_TOP_BOTTOM);
         });
-
-
         nameText.boundsInLocalProperty().addListener(observable -> {
             nameText.setTranslateX((WIDTH - 200 - nameText.getBoundsInLocal().getWidth()) / 2);
             nameText.setTranslateY(header.getY() + 150);
@@ -86,6 +84,7 @@ public class EndScreen extends Pane {
                     if (name.length() == 0)
                         name.append("Unknown");
                     HighScore.addHighScore(new HighScore(WINNING_SCORE - game.getOpponent().getScore(), name.toString()));
+
                     Back.run();
                 }
             }
@@ -108,11 +107,12 @@ public class EndScreen extends Pane {
     public void setNameText() {
         nameText.setText("Enter name:");
         if (name.length() > 0)
-            name.delete(0, name.length() - 1);
+            name.setLength(0);
         if (!soloWin()) {
             getChildren().remove(nameText);
         } else {
-            getChildren().add(nameText);
+            if (!getChildren().contains(nameText))
+                getChildren().add(nameText);
         }
     }
 

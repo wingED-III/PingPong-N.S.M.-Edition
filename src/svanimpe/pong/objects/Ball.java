@@ -58,7 +58,5 @@ public class Ball extends GameObject
 
         setX(getX() + deltaX);
         setY(getY() + deltaY);
-
-
     }
 }
