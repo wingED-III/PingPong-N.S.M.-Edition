@@ -59,7 +59,7 @@ public class EndScreen extends Pane {
         info.getStyleClass().add("info");
 
         setPrefSize(WIDTH, HEIGHT);
-        getChildren().addAll(header, info,nameText);
+        getChildren().addAll(header, info);
         getStyleClass().add("screen");
 
         setOnKeyPressed(event ->
@@ -110,6 +110,9 @@ public class EndScreen extends Pane {
             name.setLength(0);
         if (!soloWin()) {
             getChildren().remove(nameText);
+        } else {
+            if (!getChildren().contains(nameText))
+                getChildren().add(nameText);
         }
     }
 
